@@ -1,0 +1,9 @@
+# Ignorar arquivos temporários do Python
+__pycache__/
+*.py[cod]
+
+# Ignorar banco de dados local
+src/taskflow.db
+
+# Ignorar arquivos de ambiente
+.env

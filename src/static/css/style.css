@@ -1,0 +1,130 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f6fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: min(960px, 90%);
+    margin: 40px auto;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+h1,
+h2 {
+    margin: 0 0 16px;
+}
+
+.form-section,
+.tasks-section {
+    margin-bottom: 32px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+input[type="text"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dcdde1;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+}
+
+textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+button,
+a.button {
+    background-color: #2f80ed;
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+button:hover,
+a.button:hover {
+    background-color: #1366d6;
+}
+
+button.danger {
+    background-color: #eb5757;
+}
+
+button.danger:hover {
+    background-color: #d64545;
+}
+
+.inline-form {
+    display: inline-block;
+    margin: 0 4px 4px 0;
+}
+
+.small-button {
+    display: inline-block;
+    padding: 6px 10px;
+    font-size: 0.9rem;
+    margin-right: 4px;
+}
+
+.cancel {
+    background-color: #828282;
+    margin-left: 8px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: #f2f4f7;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.empty {
+    text-align: center;
+    color: #777;
+}
+
+.alerts {
+    margin-bottom: 16px;
+}
+
+.alert {
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.alert.success {
+    background-color: #dff5e4;
+    color: #2c7a3e;
+}
+
+.alert.error {
+    background-color: #fdecea;
+    color: #9a1f1f;
+}

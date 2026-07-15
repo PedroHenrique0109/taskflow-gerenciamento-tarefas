@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Gerenciamento de Tarefas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>TaskFlow</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alerts">
+                    {% for category, message in messages %}
+                        <div class="alert {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <section class="form-section">
+            <h2>{% if edit_task %}Editar Tarefa{% else %}Nova Tarefa{% endif %}</h2>
+            <form action="{% if edit_task %}{{ url_for('tasks.edit_task', task_id=edit_task.id) }}{% else %}{{ url_for('tasks.add_task') }}{% endif %}" method="post">
+                <label for="title">Título</label>
+                <input type="text" id="title" name="title" value="{{ edit_task.title if edit_task else '' }}" required>
+
+                <label for="description">Descrição</label>
+                <textarea id="description" name="description">{{ edit_task.description if edit_task else '' }}</textarea>
+
+                {% if edit_task %}
+                    <label for="status">Status</label>
+                    <select id="status" name="status">
+                        {% for option in status_options %}
+                            <option value="{{ option }}" {% if option == edit_task.status %}selected{% endif %}>{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                {% endif %}
+
+                <button type="submit">{% if edit_task %}Salvar Alterações{% else %}Adicionar Tarefa{% endif %}</button>
+                {% if edit_task %}
+                    <a class="button cancel" href="{{ url_for('tasks.index') }}">Cancelar</a>
+                {% endif %}
+            </form>
+        </section>
+
+        <section class="tasks-section">
+            <h2>Lista de Tarefas</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Descrição</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                        <tr>
+                            <td>{{ task.title }}</td>
+                            <td>{{ task.description }}</td>
+                            <td>{{ task.status }}</td>
+                            <td>
+                                <a class="small-button" href="{{ url_for('tasks.index', edit=task.id) }}">Editar</a>
+                                <form action="{{ url_for('tasks.delete_task', task_id=task.id) }}" method="post" class="inline-form">
+                                    <button type="submit" class="small-button danger">Excluir</button>
+                                </form>
+                                <form action="{{ url_for('tasks.update_status', task_id=task.id) }}" method="post" class="inline-form">
+                                    <select name="status">
+                                        {% for option in status_options %}
+                                            <option value="{{ option }}" {% if option == task.status %}selected{% endif %}>{{ option }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="small-button">Alterar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="empty">Nenhuma tarefa cadastrada.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+</body>
+</html>
