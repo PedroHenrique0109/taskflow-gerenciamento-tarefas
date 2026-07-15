@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from src.database import get_connection
 
 STATUS_OPTIONS = ['Pendente', 'Em andamento', 'Concluída']
+PRIORITY_OPTIONS = ['Baixa', 'Média', 'Alta']
 
 
 @dataclass
@@ -10,6 +11,7 @@ class Task:
     title: str
     description: str
     status: str
+    priority: str
 
 
 def row_to_task(row):
@@ -18,6 +20,7 @@ def row_to_task(row):
         title=row['title'],
         description=row['description'],
         status=row['status'],
+        priority=row['priority'],
     )
 
 
@@ -33,20 +36,20 @@ def get_task(task_id):
         return row_to_task(row) if row else None
 
 
-def create_task(title, description):
+def create_task(title, description, priority=PRIORITY_OPTIONS[1]):
     with get_connection() as conn:
         conn.execute(
-            'INSERT INTO tasks (title, description, status) VALUES (?, ?, ?)',
-            (title, description, STATUS_OPTIONS[0]),
+            'INSERT INTO tasks (title, description, status, priority) VALUES (?, ?, ?, ?)',
+            (title, description, STATUS_OPTIONS[0], priority),
         )
         conn.commit()
 
 
-def update_task(task_id, title, description, status):
+def update_task(task_id, title, description, status, priority):
     with get_connection() as conn:
         conn.execute(
-            'UPDATE tasks SET title = ?, description = ?, status = ? WHERE id = ?',
-            (title, description, status, task_id),
+            'UPDATE tasks SET title = ?, description = ?, status = ?, priority = ? WHERE id = ?',
+            (title, description, status, priority, task_id),
         )
         conn.commit()
 

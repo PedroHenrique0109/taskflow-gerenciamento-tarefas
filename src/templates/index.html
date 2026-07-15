@@ -29,6 +29,13 @@
                 <label for="description">Descrição</label>
                 <textarea id="description" name="description">{{ edit_task.description if edit_task else '' }}</textarea>
 
+                <label for="priority">Prioridade</label>
+                <select id="priority" name="priority">
+                    {% for option in priority_options %}
+                        <option value="{{ option }}" {% if edit_task and option == edit_task.priority %}selected{% elif not edit_task and option == priority_options[1] %}selected{% endif %}>{{ option }}</option>
+                    {% endfor %}
+                </select>
+
                 {% if edit_task %}
                     <label for="status">Status</label>
                     <select id="status" name="status">
@@ -52,6 +59,7 @@
                     <tr>
                         <th>Título</th>
                         <th>Descrição</th>
+                        <th>Prioridade</th>
                         <th>Status</th>
                         <th>Ações</th>
                     </tr>
@@ -61,6 +69,7 @@
                         <tr>
                             <td>{{ task.title }}</td>
                             <td>{{ task.description }}</td>
+                            <td>{{ task.priority }}</td>
                             <td>{{ task.status }}</td>
                             <td>
                                 <a class="small-button" href="{{ url_for('tasks.index', edit=task.id) }}">Editar</a>
@@ -79,7 +88,7 @@
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="4" class="empty">Nenhuma tarefa cadastrada.</td>
+                            <td colspan="5" class="empty">Nenhuma tarefa cadastrada.</td>
                         </tr>
                     {% endfor %}
                 </tbody>

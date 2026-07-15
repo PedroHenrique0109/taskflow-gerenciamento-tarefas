@@ -9,18 +9,28 @@ def index():
     tasks = models.get_all_tasks()
     edit_id = request.args.get('edit')
     edit_task = models.get_task(int(edit_id)) if edit_id else None
-    return render_template('index.html', tasks=tasks, edit_task=edit_task, status_options=models.STATUS_OPTIONS)
+    return render_template(
+        'index.html',
+        tasks=tasks,
+        edit_task=edit_task,
+        status_options=models.STATUS_OPTIONS,
+        priority_options=models.PRIORITY_OPTIONS,
+    )
 
 
 @bp.route('/add', methods=['POST'])
 def add_task():
     title = request.form.get('title', '').strip()
     description = request.form.get('description', '').strip()
+    priority = request.form.get('priority', models.PRIORITY_OPTIONS[1])
     if not title:
         flash('O título da tarefa é obrigatório.', 'error')
         return redirect(url_for('tasks.index'))
 
-    models.create_task(title, description)
+    if priority not in models.PRIORITY_OPTIONS:
+        priority = models.PRIORITY_OPTIONS[1]
+
+    models.create_task(title, description, priority)
     flash('Tarefa criada com sucesso.', 'success')
     return redirect(url_for('tasks.index'))
 
@@ -30,11 +40,17 @@ def edit_task(task_id):
     title = request.form.get('title', '').strip()
     description = request.form.get('description', '').strip()
     status = request.form.get('status', models.STATUS_OPTIONS[0])
+    priority = request.form.get('priority', models.PRIORITY_OPTIONS[1])
     if not title:
         flash('O título da tarefa é obrigatório.', 'error')
         return redirect(url_for('tasks.index', edit=task_id))
 
-    models.update_task(task_id, title, description, status)
+    if status not in models.STATUS_OPTIONS:
+        status = models.STATUS_OPTIONS[0]
+    if priority not in models.PRIORITY_OPTIONS:
+        priority = models.PRIORITY_OPTIONS[1]
+
+    models.update_task(task_id, title, description, status, priority)
     flash('Tarefa atualizada com sucesso.', 'success')
     return redirect(url_for('tasks.index'))
 
